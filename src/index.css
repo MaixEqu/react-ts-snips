@@ -1,0 +1,4 @@
+textarea.halfsize {
+  width: 48%;
+  resize: vertical; max-height: 800px; min-height: 100px;
+}
