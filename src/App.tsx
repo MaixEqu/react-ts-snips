@@ -49,13 +49,20 @@ export class Main extends React.Component {
       console.log('Now no "this.textInput_r.current"')
     }
   };
-  handleOnClick = () => {
+  handleOnClick = (e: any) => {
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`;
     if (this.textInput_res.current) {
       this.textInput_res.current.cols = 60
       this.textInput_res.current.scrollTop += 20
     } else {
       console.log('Now no "this.textInput_r.current"')
     }
+  }
+  handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    //this.setState({text_s: e.target.value});
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`;
   }
   handleOnScroll_from = () => {
     if (this.textInput_from.current) {
@@ -81,7 +88,7 @@ export class Main extends React.Component {
     };
     return (
       <div>
-        <h3>Textareas properties tests (J2L, v.10)<br /></h3>
+        <h3>Textareas properties tests (J2L, v.11)<br /></h3>
         <form onSubmit={this.handleSubmit}>
         <textarea
             className="halfsize"
@@ -90,6 +97,7 @@ export class Main extends React.Component {
             ref={this.textInput_from}
             defaultValue={this.state.text_from}
             onScroll={this.handleOnScroll_from}
+            onChange={this.handleTextChange}
           />
           {' '}
           <textarea
