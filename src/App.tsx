@@ -1,5 +1,7 @@
 import * as React from "react";
 
+const sVerInfo = "Textareas properties tests (J2L, v.12)"
+
 interface IProps {}
 interface IState {
   text_from: string;
@@ -23,7 +25,7 @@ export class Main extends React.Component {
   state: IState;
   constructor(props: IProps) {
     super(props)
-    const sFill = this.taText.repeat(4)
+    const sFill = "=========\n" + this.taText.repeat(8)
     this.state = {
       text_from: sFill,
       text_res: sFill,
@@ -51,18 +53,34 @@ export class Main extends React.Component {
   };
   handleOnClick = (e: any) => {
     e.target.style.height = 'inherit';
-    e.target.style.height = `${e.target.scrollHeight}px`;
-    if (this.textInput_res.current) {
-      this.textInput_res.current.cols = 60
-      this.textInput_res.current.scrollTop += 20
+    e.target.style.height = e.target.scrollHeight + "px";
+    if (this.textInput_from.current && this.textInput_res.current) {
+      console.log(this.textInput_res.current.style);
+      this._autoResize();
+      // this.textInput_from.current.style.height = 'inherit';
+      // this.textInput_from.current.style.height = '120px';
+      // this.textInput_res.current.style.height = 'inherit';
+      // this.textInput_res.current.style.height = '120px';
     } else {
       console.log('Now no "this.textInput_r.current"')
     }
   }
-  handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  _autoResize = () => {
+    if (this.textInput_from.current && this.textInput_res.current) {
+      const nScrollHeight = this.textInput_from.current.scrollHeight;
+      console.log(nScrollHeight);
+      
+      this.textInput_from.current.style.height = 'inherit';
+      this.textInput_from.current.style.height = nScrollHeight + 'px';
+      this.textInput_res.current.style.height = 'inherit';
+      this.textInput_res.current.style.height = nScrollHeight + 'px';
+    }
+  }
+  handleTextChange = () => {
+    this._autoResize();
     //this.setState({text_s: e.target.value});
-    e.target.style.height = 'inherit';
-    e.target.style.height = `${e.target.scrollHeight}px`;
+    // e.target.style.height = 'inherit';
+    // e.target.style.height = `${e.target.scrollHeight}px`;
   }
   handleOnScroll_from = () => {
     if (this.textInput_from.current) {
@@ -88,9 +106,12 @@ export class Main extends React.Component {
     };
     return (
       <div>
-        <h3>Textareas properties tests (J2L, v.11)<br /></h3>
+        <h3>{sVerInfo}</h3>
         <form onSubmit={this.handleSubmit}>
-        <textarea
+          <button>R = L x 2 (Submit)</button>
+          <br />
+          <br />
+          <textarea
             className="halfsize"
             style={taStyle}
             id="ta-from"
@@ -109,9 +130,6 @@ export class Main extends React.Component {
             ref={this.textInput_res}
             readOnly={true}
           />
-          <br />
-          <br />
-          <button>R = L x 2 (Submit)</button>
         </form>
       </div>
     );
