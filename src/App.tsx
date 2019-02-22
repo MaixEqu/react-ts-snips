@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const sVerInfo = "Textareas properties tests (J2M, v.15)"
+const sVerInfo = "Textareas properties tests (J2M, v.15+)"
 
 interface IProps {}
 interface IState {
@@ -78,22 +78,26 @@ export class Main extends React.Component {
           <br />
           <br />
           <textarea
+            defaultValue = {this.state.text_from}
             className="halfsize"
             style={taStyle}
             id="ta-from"
             ref={this.textInput_from}
-            defaultValue={this.state.text_from}
-            onScroll={this.handleOnScroll_from}
+            onChange = {this._autoResize}
+            onScroll = {this.handleOnScroll_from}
+            onDoubleClick = {this._autoResize}
+            onSeeking = {this._autoResize}
           />
           {' '}
           <textarea
+            value={this.state.text_res}
             className="halfsize"
             style={taStyle}
             id="ta-to"
             ref={this.textInput_res}
-            value={this.state.text_res}
-            onChange={this._autoResize}
-            readOnly={true}
+            onChange = {this._autoResize}
+            onDoubleClick = {this._autoResize}
+            readOnly = {true}
           />
           <br />
           <br />
