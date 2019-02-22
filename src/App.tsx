@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const sVerInfo = "Textareas properties tests (J2M, v.14)"
+const sVerInfo = "Textareas properties tests (J2M, v.15)"
 
 interface IProps {}
 interface IState {
@@ -10,18 +10,12 @@ interface IState {
   cols_res: number;
   rows: number;
   height: number;
-  width?: number;
-  height_from?: number;
-  width_from?: number;
-  height_res?: number;
-  width_res?: number;
 }
 export class Main extends React.Component {
   textInput_from = React.createRef<HTMLTextAreaElement>();
   textInput_res = React.createRef<HTMLTextAreaElement>();
   fileInput = React.createRef<HTMLInputElement>();
   taText = `line1\nline2\nl3\nl-4\nline-5\n\nRepeat: line1\nline2\nl3\nl-4\nline-5\n`;
-  // taText = taText + taText + taText
 
   state: IState;
   constructor(props: IProps) {
@@ -44,16 +38,6 @@ export class Main extends React.Component {
       this.setState({text_res: sText_from + sText_from})
     }
   };
-  /*
-  handleOnClick = (e: any) => {
-    e.target.style.height = 'inherit';
-    e.target.style.height = e.target.scrollHeight + "px";
-    if (this.textInput_from.current && this.textInput_res.current) {
-      //console.log(this.textInput_res.current.style);
-      this._autoResize();
-    }
-  }
-  */
   _autoResize = () => {
     if (this.textInput_from.current && this.textInput_res.current) {
       const nScrollHeight = this.textInput_from.current.scrollHeight;
@@ -64,24 +48,12 @@ export class Main extends React.Component {
       this.textInput_res.current.style.height = nScrollHeight + 'px';
     }
   }
-  handleTextChange = () => {
-    this._autoResize();
-  }
-
   handleOnScroll_from = () => {
     if (this.textInput_from.current) {
       console.log(this.textInput_from.current.scrollTop)
       if (this.textInput_res.current) {
         this.textInput_res.current.scrollTop = this.textInput_from.current.scrollTop
       }11
-    }
-  }
-  handleOnScroll_res = () => {
-    if (this.textInput_res.current) {
-      console.log(this.textInput_res.current.scrollTop)
-      if (this.textInput_from.current) {
-        this.textInput_from.current.scrollTop = this.textInput_res.current.scrollTop
-      }
     }
   }
   componentDidMount() {
@@ -102,8 +74,6 @@ export class Main extends React.Component {
       <div>
         <h3>{sVerInfo}</h3>
         <form onSubmit={this.handleSubmit}>
-          <button>R = L x 2 (Submit)</button>
-          {' '} Local file: {' '}
           <input type="file" ref={this.fileInput} onChange={this.handleChooseFile} />
           <br />
           <br />
@@ -114,9 +84,6 @@ export class Main extends React.Component {
             ref={this.textInput_from}
             defaultValue={this.state.text_from}
             onScroll={this.handleOnScroll_from}
-            onChange={this._autoResize}
-            onClick={this._autoResize}
-            onInput={this._autoResize}
           />
           {' '}
           <textarea
@@ -126,10 +93,11 @@ export class Main extends React.Component {
             ref={this.textInput_res}
             value={this.state.text_res}
             onChange={this._autoResize}
-            onScroll={this._autoResize}
-            
             readOnly={true}
           />
+          <br />
+          <br />
+          <button>R = L x 2 (Submit)</button>
         </form>
       </div>
     );
