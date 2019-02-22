@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const sVerInfo = "Textareas properties tests (J2M, v.15+)"
+const sVerInfo = "Textareas properties tests (J2M, v.16)"
 
 interface IProps {}
 interface IState {
@@ -22,8 +22,8 @@ export class Main extends React.Component {
     super(props)
     const sFill = "=========\n" + this.taText.repeat(1)
     this.state = {
-      text_from: sFill+sFill+sFill,
-      text_res: sFill+sFill,
+      text_from: sFill.repeat(1),
+      text_res: sFill.repeat(2),
       cols_from: 44,
       cols_res: 44,
       rows: 7,
@@ -59,12 +59,34 @@ export class Main extends React.Component {
   componentDidMount() {
     this._autoResize();
   }
+
   handleChooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sFname = (this.fileInput.current && this.fileInput.current.files)
               ? this.fileInput.current.files[0].name
               : ""
+    const oFname = (this.fileInput.current && this.fileInput.current.files)
+              ? this.fileInput.current.files[0]
+              : null              
     console.log(`file input '${sFname}' choosen.`);
+    if (oFname) {
+      //let data = new FormData();
+      //data.append('file', sFname);
+      let reader = new FileReader();
+      reader.readAsText(oFname, "UTF-8");
+      reader.onload = this.loaded;
+      //console.log(reader);
+      //console.log(reader.result);
+      
+    }
   }
+
+  loaded = (e: any) => {
+    var sText = e.target.result;
+    console.log(sText);
+    this.setState({text_from: sText})
+    this.setState({text_res: sText})
+  }
+
   render() {
     const taStyle = {
       height: this.state.height+'px',
@@ -76,6 +98,7 @@ export class Main extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <input type="file" ref={this.fileInput} onChange={this.handleChooseFile} />
           <br />
+          <span>LTA length: {this.state.text_from.length}</span>
           <br />
           <textarea
             defaultValue = {this.state.text_from}
@@ -83,10 +106,7 @@ export class Main extends React.Component {
             style={taStyle}
             id="ta-from"
             ref={this.textInput_from}
-            onChange = {this._autoResize}
-            onScroll = {this.handleOnScroll_from}
-            onDoubleClick = {this._autoResize}
-            onSeeking = {this._autoResize}
+
           />
           {' '}
           <textarea
@@ -107,4 +127,9 @@ export class Main extends React.Component {
     );
   }
 }
-
+/*
+            onChange = {this._autoResize}
+            onScroll = {this.handleOnScroll_from}
+            onDoubleClick = {this._autoResize}
+            onSeeking = {this._autoResize}
+*/
