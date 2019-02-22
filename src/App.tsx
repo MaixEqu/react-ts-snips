@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const sVerInfo = "Textareas properties tests (J2L, v.13)"
+const sVerInfo = "Textareas properties tests (J2M, v.14)"
 
 interface IProps {}
 interface IState {
@@ -19,6 +19,7 @@ interface IState {
 export class Main extends React.Component {
   textInput_from = React.createRef<HTMLTextAreaElement>();
   textInput_res = React.createRef<HTMLTextAreaElement>();
+  fileInput = React.createRef<HTMLInputElement>();
   taText = `line1\nline2\nl3\nl-4\nline-5\n\nRepeat: line1\nline2\nl3\nl-4\nline-5\n`;
   // taText = taText + taText + taText
 
@@ -43,6 +44,7 @@ export class Main extends React.Component {
       this.setState({text_res: sText_from + sText_from})
     }
   };
+  /*
   handleOnClick = (e: any) => {
     e.target.style.height = 'inherit';
     e.target.style.height = e.target.scrollHeight + "px";
@@ -51,6 +53,7 @@ export class Main extends React.Component {
       this._autoResize();
     }
   }
+  */
   _autoResize = () => {
     if (this.textInput_from.current && this.textInput_res.current) {
       const nScrollHeight = this.textInput_from.current.scrollHeight;
@@ -64,12 +67,13 @@ export class Main extends React.Component {
   handleTextChange = () => {
     this._autoResize();
   }
+
   handleOnScroll_from = () => {
     if (this.textInput_from.current) {
       console.log(this.textInput_from.current.scrollTop)
       if (this.textInput_res.current) {
         this.textInput_res.current.scrollTop = this.textInput_from.current.scrollTop
-      }
+      }11
     }
   }
   handleOnScroll_res = () => {
@@ -83,6 +87,12 @@ export class Main extends React.Component {
   componentDidMount() {
     this._autoResize();
   }
+  handleChooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const sFname = (this.fileInput.current && this.fileInput.current.files)
+              ? this.fileInput.current.files[0].name
+              : ""
+    console.log(`file input '${sFname}' choosen.`);
+  }
   render() {
     const taStyle = {
       height: this.state.height+'px',
@@ -93,6 +103,8 @@ export class Main extends React.Component {
         <h3>{sVerInfo}</h3>
         <form onSubmit={this.handleSubmit}>
           <button>R = L x 2 (Submit)</button>
+          {' '} Local file: {' '}
+          <input type="file" ref={this.fileInput} onChange={this.handleChooseFile} />
           <br />
           <br />
           <textarea
@@ -113,7 +125,6 @@ export class Main extends React.Component {
             id="ta-to"
             ref={this.textInput_res}
             value={this.state.text_res}
-            onClick={this.handleOnClick}
             onChange={this._autoResize}
             onScroll={this._autoResize}
             
