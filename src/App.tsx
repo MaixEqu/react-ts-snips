@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const sVerInfo = "Textareas properties tests (J2M, v.16)"
+const sVerInfo = "Textareas properties tests (J2M, v.17)"
 
 interface IProps {}
 interface IState {
@@ -39,6 +39,7 @@ export class Main extends React.Component {
     }
   };
   _autoResize = () => {
+    this._minResize()
     if (this.textInput_from.current && this.textInput_res.current) {
       const nScrollHeight = this.textInput_from.current.scrollHeight;
       //console.log(nScrollHeight);
@@ -46,6 +47,14 @@ export class Main extends React.Component {
       this.textInput_from.current.style.height = nScrollHeight + 'px';
       this.textInput_res.current.style.height = 'inherit';
       this.textInput_res.current.style.height = nScrollHeight + 'px';
+    }
+  }
+  _minResize = () => {
+    if (this.textInput_from.current && this.textInput_res.current) {
+      this.textInput_from.current.style.height = 'inherit';
+      this.textInput_from.current.style.height = '50px';
+      this.textInput_res.current.style.height = 'inherit';
+      this.textInput_res.current.style.height = '50px';
     }
   }
   handleOnScroll_from = () => {
@@ -84,7 +93,8 @@ export class Main extends React.Component {
     var sText = e.target.result;
     console.log(sText);
     this.setState({text_from: sText})
-    this.setState({text_res: sText})
+    this._autoResize();
+    //this.setState({text_res: sText})
   }
 
   render() {
@@ -101,12 +111,13 @@ export class Main extends React.Component {
           <span>LTA length: {this.state.text_from.length}</span>
           <br />
           <textarea
-            defaultValue = {this.state.text_from}
+            value = {this.state.text_from}
             className="halfsize"
             style={taStyle}
             id="ta-from"
             ref={this.textInput_from}
-
+            onChange = {this._autoResize}
+            onDoubleClick = {this._autoResize}
           />
           {' '}
           <textarea
